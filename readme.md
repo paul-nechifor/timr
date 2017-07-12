@@ -8,9 +8,7 @@ My project for my [Web Technologies][1] course in 2010.
 
 ### Install Smarty
 
-    wget http://www.smarty.net/files/Smarty-2.6.28.tar.gz
-    tar -xzf Smarty-2.6.28.tar.gz
-    sudo cp Smarty-2.6.28/libs /usr/share/php/Smarty
+    sudo cp -r libs/Smarty-2.6.28/libs /usr/share/php/Smarty
 
 ## Run it
 
