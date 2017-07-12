@@ -14,6 +14,7 @@ My project for my [Web Technologies][1] course in 2010.
 
 Run with:
 
+    cd dist
     php -S localhost:8000
 
 and navigate to [localhost:8000](http://localhost:8000).

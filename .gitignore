@@ -1,2 +1,2 @@
-/sabloane/compile/*
-!/sabloane/compile/.gitkeep
+/dist/sabloane/compile/*
+!/dist/sabloane/compile/.gitkeep
