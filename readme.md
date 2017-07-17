@@ -6,6 +6,10 @@ My project for my [Web Technologies][1] course in 2010.
 
 ## Install
 
+### Install Sqlite 3
+
+    sudo apt-get install php7.0-sqlite3
+
 ### Install Smarty
 
     sudo cp -r libs/Smarty-2.6.28/libs /usr/share/php/Smarty

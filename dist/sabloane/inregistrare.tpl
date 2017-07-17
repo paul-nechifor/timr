@@ -49,7 +49,7 @@
                     </li>
                 </ul>
             </fieldset>
-            
+
             <p><input type="submit" value="Trimite" id="trimiteInregistrare"/></p>
         </form>
     {else}

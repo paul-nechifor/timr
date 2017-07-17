@@ -5,42 +5,44 @@ class BazaDeDate {
     const PASSWORD = "";
     const DATABASE = "orarbd";
 
-    private static $mysqli = NULL;
+    private static $db = NULL;
 
     public static function deschide()
     {
-        self::$mysqli = new mysqli(self::HOSTNAME, self::USER, self::PASSWORD, self::DATABASE);
+        self::$db = new SQLite3('db.sqlite3');
     }
     public static function inchide()
     {
-        self::$mysqli->close();
+        self::$db->close();
     }
     public static function executa($comanda)
     {
-        $rezultat = self::$mysqli->query($comanda);
-        if (!$rezultat) die("Comanda <b>$comanda</b>. Eroare: <b>" . self::$mysqli->error . "</b>");
-        return $rezultat;
+        return self::$db->query($comanda);
     }
     public static function numarDeRanduri($comanda)
     {
+        $n = 0;
         $rezultat = self::executa($comanda);
-        return $rezultat->num_rows;       
+        while ($rezultat->fetchArray())
+            $n++;
+        return $n;
     }
     public static function primulRand($comanda)
     {
         $rezultat = self::executa($comanda);
-        $rand = $rezultat->fetch_assoc();
+        $rand = $rezultat->fetchArray();
         return $rand;
     }
     public static function dump($numeTabel)
     {
-        $rezultat = self::executa("select * from $numeTabel;");
-        if ($rezultat->num_rows == 0)
+        $sql = "select * from $numeTabel;";
+        $rezultat = self::executa($sql);
+        if (self::numarDeRanduri($sql) == 0)
             return;
 
         echo "<h3>$numeTabel</h3>";
         echo "<table border='1'>";
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
         {
             echo "<tr>";
             foreach ($rand as $valoare)
@@ -165,7 +167,7 @@ class BazaDeDate {
         // Selectează grupele dar fără an sau semi-an.
         $rezultat = self::executa("select nume from participanti where cod not in (select distinct codparinte from participanti where codparinte is not null);");
         $participanti = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $participanti[] = $rand["nume"];
         return $participanti;
     }
@@ -182,7 +184,7 @@ class BazaDeDate {
     {
         $rezultat = self::executa("select nume from profi;");
         $profi = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $profi[] = $rand["nume"];
         return $profi;
     }
@@ -190,7 +192,7 @@ class BazaDeDate {
     {
         $rezultat = self::executa("select nume from sali;");
         $sali = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $sali[] = $rand["nume"];
         return $sali;
     }
@@ -198,7 +200,7 @@ class BazaDeDate {
     {
         $rezultat = self::executa("select nume from materii;");
         $materii = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $materii[] = $rand["nume"];
         return $materii;
     }
@@ -252,25 +254,23 @@ class BazaDeDate {
     }
     public static function getDateRecuperare($codRecuperare)
     {
-        $rezultat = self::executa("select u.email, r.timp from utilizatori u, recuperare r where r.codutil = u.cod and r.codrec = '$codRecuperare';");
-        if ($rezultat->num_rows === 0)
+        $sql = "select u.email, r.timp from utilizatori u, recuperare r where r.codutil = u.cod and r.codrec = '$codRecuperare';";
+        $rezultat = self::executa($sql);
+        if (self::numarDeRanduri($sql) === 0)
             return FALSE;
-        return $rezultat->fetch_assoc();
+        return $rezultat->fetchArray();
     }
     public static function disciplinePentruProf($prof)
     {
-        $rezultat = self::executa("select * from discipline where prof = '$prof' order by zi, start;");
-        return self::intoarceTabel($rezultat);
+        return self::intoarceTabel("select * from discipline where prof = '$prof' order by zi, start;");
     }
     public static function disciplinePentruMaterie($materie)
     {
-        $rezultat = self::executa("select * from discipline where den = '$materie' order by zi, start;");
-        return self::intoarceTabel($rezultat);
+        return self::intoarceTabel("select * from discipline where den = '$materie' order by zi, start;");
     }
     public static function disciplinePentruSala($sala)
     {
-        $rezultat = self::executa("select * from discipline where sala = '$sala' order by zi, start;");
-        return self::intoarceTabel($rezultat);
+        return self::intoarceTabel("select * from discipline where sala = '$sala' order by zi, start;");
     }
     public static function materiileMele($grupa)
     {
@@ -279,7 +279,7 @@ class BazaDeDate {
 
         $rezultat = self::executa("select distinct den from discipline where (parti like '%,$grupa,%') or (parti like '%,$semian,%');");
         $materii = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $materii[] = $rand["den"];
 
         return $materii;
@@ -291,7 +291,7 @@ class BazaDeDate {
 
         $rezultat = self::executa("select distinct prof from discipline where (parti like '%,$grupa,%') or (parti like '%,$semian,%');");
         $profi = array();
-        while ($rand = $rezultat->fetch_assoc())
+        while ($rand = $rezultat->fetchArray())
             $profi[] = $rand["prof"];
 
         return $profi;
@@ -301,16 +301,17 @@ class BazaDeDate {
         $an = substr($grupa, 0, 2);
         $semian = substr($grupa, 0, 3);
 
-        $rezultat = self::executa("select * from discipline where (parti like '%,$grupa,%') or (parti like '%,$semian,%') order by zi, start;");
-        return self::intoarceTabel($rezultat);
+        return self::intoarceTabel("select * from discipline where (parti like '%,$grupa,%') or (parti like '%,$semian,%') order by zi, start;");
     }
-    private static function intoarceTabel($rezultat)
+    private static function intoarceTabel($sql)
     {
+        $rezultat = self::executa($sql);
         $zile = array("luni", "marți", "miercuri", "joi", "vineri", "sâmbătă", "duminică");
         $discipline = array();
-        for ($i = 0; $i < $rezultat->num_rows; $i++)
+        $len = self::numarDeRanduri($sql);
+        for ($i = 0; $i < $len; $i++)
         {
-            $assoc = $rezultat->fetch_assoc();
+            $assoc = $rezultat->fetchArray();
             $assoc["zi"] = $zile[$assoc["zi"]];
             if (strlen($assoc["start"]) < 2)
                 $assoc["start"] = "0" . $assoc["start"];
