@@ -39,7 +39,7 @@ else
         }
 
         $gr = $grupa[3] . $grupa[2];
-        $afiseaza .= "<a href='orar.php?grupa=$grupa'>$gr</a> ";
+        $afiseaza .= "<a href='/timr/orar.php?grupa=$grupa'>$gr</a> ";
     }
 
     $afiseaza = substr($afiseaza, 4) . "</p>";

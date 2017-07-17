@@ -25,9 +25,9 @@ else
     foreach ($profi as $prof)
     {
         if ($auten && array_search($prof, $mei) !== FALSE)
-            $afis .= "<li><strong><a href='profesori.php?prof=$prof'>$prof</a></strong></li>";
+            $afis .= "<li><strong><a href='/timr/profesori.php?prof=$prof'>$prof</a></strong></li>";
         else
-            $afis .= "<li><a href='profesori.php?prof=$prof'>$prof</a></li>";
+            $afis .= "<li><a href='/timr/profesori.php?prof=$prof'>$prof</a></li>";
     }
     $afis .= "</ul></div>";
     $smarty->assign("afiseaza", $afis);

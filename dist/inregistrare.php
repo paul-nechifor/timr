@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     if (!preg_match("/^[A-Z0-9._%-]+@[A-Z0-9][A-Z0-9.-]{0,61}[A-Z0-9]\.[A-Z]{2,6}$/i", $email))
         $erori[] = "Adresa <em>email</em> „${email}“ nu prea e validă.";
     if (BazaDeDate::existaUtilizatorul($email))
-        $erori[] = "Adresă <em>email</em> „${email}“ există în baza de date. Dacă ți-ai uitat parola poți s-o <a href='/recuperare.php'>recuperezi</a>.";
+        $erori[] = "Adresă <em>email</em> „${email}“ există în baza de date. Dacă ți-ai uitat parola poți s-o <a href='/timr/recuperare.php'>recuperezi</a>.";
     if (array_search($grupa, $participanti) === FALSE)
         $erori[] = "Nu există grupa „${grupa}“.";
     if (strlen($parola1) < 6)

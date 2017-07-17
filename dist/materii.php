@@ -24,9 +24,9 @@ else
     foreach ($materii as $materie)
     {
         if ($auten && array_search($materie, $mele) !== FALSE)
-            $afis .= "<li><strong><a href='materii.php?disciplina=$materie'>$materie</a></strong></li>";
+            $afis .= "<li><strong><a href='/timr/materii.php?disciplina=$materie'>$materie</a></strong></li>";
         else
-            $afis .= "<li><a href='materii.php?disciplina=$materie'>$materie</a></li>";
+            $afis .= "<li><a href='/timr/materii.php?disciplina=$materie'>$materie</a></li>";
     }
 
     $afis .= "</ul></div>";

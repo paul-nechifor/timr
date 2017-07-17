@@ -7,8 +7,8 @@
     </div>
 {else}
     {if $smarty.server.REQUEST_METHOD == "GET"}
-        <p>Scrie adresa de <em>email</em> și parola cu care te-ai înregistrat pentru a te autentifica. Dacă ți-ai uitat parola poți s-o <a href="/recuperare.php">recuperezi</a>.</p>
-        <form action="/autentificare.php" method="post">
+        <p>Scrie adresa de <em>email</em> și parola cu care te-ai înregistrat pentru a te autentifica. Dacă ți-ai uitat parola poți s-o <a href="/timr/recuperare.php">recuperezi</a>.</p>
+        <form action="/timr/autentificare.php" method="post">
             <fieldset>
                 <legend>Autentificare</legend>
 
@@ -27,7 +27,7 @@
                 <input name="vineDeLa" type="hidden" value="{$referer}"/>
                 {/if}
             </fieldset>
-            
+
             <p><input type="submit" value="Trimite"/></p>
         </form>
     {/if}

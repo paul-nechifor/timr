@@ -9,7 +9,7 @@ $referer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "";
 $erori = array();
 
 if (isset($_SESSION["email"]))
-    $erori[] = "Ești deja autentificat. Trebuie să <a href='/iesire.php'>ieși</a> dacă vrei să intrii din nou.";
+    $erori[] = "Ești deja autentificat. Trebuie să <a href='/timr/iesire.php'>ieși</a> dacă vrei să intrii din nou.";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $dateUtilizator = BazaDeDate::getDateUtilizator($email);
         if ($dateUtilizator["md5parola"] !== $md5parola)
-            $erori[] = "Parola nu se potrivește. Dacă ai uitat parola poți să o <a href='/recuperare.php'>recuperezi</a>.";
+            $erori[] = "Parola nu se potrivește. Dacă ai uitat parola poți să o <a href='/timr/recuperare.php'>recuperezi</a>.";
     }
 
     if (count($erori) === 0)
