@@ -1,3 +1,7 @@
+# This repository has been moved to [gitlab.com/paul-nechifor/timr](http://gitlab.com/paul-nechifor/timr).
+
+Old readme:
+
 # Timr
 
 My project for my [Web Technologies][1] course in 2010.
